@@ -25,6 +25,22 @@ if (navigator.geolocation) {
         L.marker(coords).addTo(map)
             .bindPopup('This is my current location')
             .openPopup();
+
+        map.on('click', function (mapEvent) {
+            form.classList.remove('hidden');
+            // const {lat, lng} = mapEvent.latlng;
+            //
+            // L.marker([lat, lng]).addTo(map)
+            //     .bindPopup(L.popup({
+            //         maxWidth: 250,
+            //         minWidth: 100,
+            //         autoClose: false,
+            //         closeOnClick: false,
+            //         className: 'place-popup'
+            //     }))
+            //     .setPopupContent('Place')
+            //     .openPopup();
+        });
     }, function () {
         alert('Could not get your location');
     })
