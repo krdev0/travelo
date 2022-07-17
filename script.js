@@ -6,8 +6,10 @@ const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 const form = document.querySelector('.form');
 const containerWorkouts = document.querySelector('.workouts');
 const inputType = document.querySelector('.form__input--type');
-const inputDistance = document.querySelector('.form__input--description');
-const inputDuration = document.querySelector('.form__input--price');
+const inputDescription = document.querySelector('.form__input--description');
+const inputPrice = document.querySelector('.form__input--price');
+
+let map, mapEvent;
 
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function (position) {
@@ -16,7 +18,7 @@ if (navigator.geolocation) {
 
         const coords = [latitude, longitude];
 
-        const map = L.map('map').setView(coords, 14);
+        map = L.map('map').setView(coords, 14);
 
         L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -26,23 +28,34 @@ if (navigator.geolocation) {
             .bindPopup('This is my current location')
             .openPopup();
 
-        map.on('click', function (mapEvent) {
+        map.on('click', function (mapE) {
+            mapEvent = mapE;
             form.classList.remove('hidden');
-            // const {lat, lng} = mapEvent.latlng;
-            //
-            // L.marker([lat, lng]).addTo(map)
-            //     .bindPopup(L.popup({
-            //         maxWidth: 250,
-            //         minWidth: 100,
-            //         autoClose: false,
-            //         closeOnClick: false,
-            //         className: 'place-popup'
-            //     }))
-            //     .setPopupContent('Place')
-            //     .openPopup();
+            inputDescription.focus();
         });
     }, function () {
         alert('Could not get your location');
     })
 }
 
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const {lat, lng} = mapEvent.latlng;
+
+    inputPrice.value = inputType.value = '';
+
+    L.marker([lat, lng]).addTo(map)
+        .bindPopup(L.popup({
+            maxWidth: 250,
+            minWidth: 100,
+            autoClose: false,
+            closeOnClick: false,
+            className: 'place-popup'
+        }))
+        .setPopupContent('Place')
+        .openPopup();
+})
+
+inputType.addEventListener('change', function() {
+    inputPrice.closest('.form__row').classList.toggle('form__row--hidden');
+})
