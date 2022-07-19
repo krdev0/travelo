@@ -52,6 +52,7 @@ class App {
         this.#mapEvent = mapE;
         form.classList.remove('hidden');
         inputDescription.focus();
+        console.log('123');
     }
 
     _togglePriceField() {
