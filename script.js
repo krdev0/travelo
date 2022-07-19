@@ -9,6 +9,25 @@ const inputType = document.querySelector('.form__input--type');
 const inputDescription = document.querySelector('.form__input--description');
 const inputPrice = document.querySelector('.form__input--price');
 
+class Place {
+    id = (Date.now() + '').slice(-10);
+
+    constructor(coords, description) {
+        this.coords = coords;
+        this.description = description;
+    }
+}
+
+class Hotel extends Place{
+    constructor(coords,description, price) {
+        super(coords,description);
+        this.price = price;
+    }
+}
+
+const hotel1 = new Hotel([39, -12], 'This is cool hotel located in Portugal', 50);
+console.log(hotel1);
+
 class App {
     #map;
     #mapEvent;
@@ -52,7 +71,6 @@ class App {
         this.#mapEvent = mapE;
         form.classList.remove('hidden');
         inputDescription.focus();
-        console.log('123');
     }
 
     _togglePriceField() {
