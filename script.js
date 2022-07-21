@@ -3,11 +3,6 @@
 // prettier-ignore
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-const form = document.querySelector('.form');
-const containerWorkouts = document.querySelector('.workouts');
-const inputType = document.querySelector('.form__input--type');
-const inputDescription = document.querySelector('.form__input--description');
-const inputPrice = document.querySelector('.form__input--price');
 
 class Place {
     id = (Date.now() + '').slice(-10);
@@ -18,15 +13,31 @@ class Place {
     }
 }
 
-class Hotel extends Place{
-    constructor(coords,description, price) {
-        super(coords,description);
+class Hotel extends Place {
+    constructor(coords, description, price) {
+        super(coords, description);
         this.price = price;
+    }
+}
+
+class Activity extends Place {
+    constructor(coords, description, type) {
+        super(coords, description);
+        this.type = type;
     }
 }
 
 const hotel1 = new Hotel([39, -12], 'This is cool hotel located in Portugal', 50);
 console.log(hotel1);
+
+
+// Project architecture
+const form = document.querySelector('.form');
+const containerWorkouts = document.querySelector('.workouts');
+const inputType = document.querySelector('.form__input--type');
+const inputDescription = document.querySelector('.form__input--description');
+const inputPrice = document.querySelector('.form__input--price');
+const inputActivity = document.querySelector('.form__input--activity');
 
 class App {
     #map;
@@ -36,7 +47,7 @@ class App {
         this._getPosition();
 
         form.addEventListener('submit', this._newPoint.bind(this));
-        inputType.addEventListener('change', this._togglePriceField);
+        inputType.addEventListener('change', this._toggleActivityField);
     }
 
     _getPosition() {
@@ -73,16 +84,33 @@ class App {
         inputDescription.focus();
     }
 
-    _togglePriceField() {
+    _toggleActivityField() {
         inputPrice.closest('.form__row').classList.toggle('form__row--hidden');
+        inputActivity.closest('.form__row').classList.toggle('form__row--hidden');
     }
 
     _newPoint(e) {
         e.preventDefault();
+
+        // Get data from form
+        const type = inputType.value;
+        const description = inputDescription.value;
+
+        //Check if data from form is valid
+
+        //If its hotel, create hotel object
+        if (type === 'hotel') {
+            const price = +inputPrice.value;
+
+            if (!Number.isFinite(price)) return alert('Price has to be positive number!');
+        }
+
+        //If its activity, create activity object
+        if (type === 'activity') {
+            const activity = inputActivity.value;
+        }
+
         const {lat, lng} = this.#mapEvent.latlng;
-
-        inputPrice.value = inputType.value = '';
-
         L.marker([lat, lng]).addTo(this.#map)
             .bindPopup(L.popup({
                 maxWidth: 250,

@@ -32,8 +32,8 @@
             <div class="form__row">
                 <label class="form__label">Type</label>
                 <select class="form__input form__input--type">
-                    <option value="place">Place</option>
                     <option value="hotel">Hotel</option>
+                    <option value="activity">Activity</option>
                 </select>
             </div>
 
@@ -45,11 +45,19 @@
                 />
             </div>
 
-            <div class="form__row form__row--hidden">
+            <div class="form__row">
                 <label class="form__label">Price</label>
                 <input
                         class="form__input form__input--price"
                         placeholder="Price"
+                />
+            </div>
+
+            <div class="form__row form__row--hidden">
+                <label class="form__label">Activity</label>
+                <input
+                        class="form__input form__input--activity"
+                        placeholder="Type of activity"
                 />
             </div>
             <button class="form__btn">OK</button>
